@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+    finances-front:
+        container_name: finances-front
+        build: ./frontend
+        image: finances-front:latest
+        depends_on:
+            - finances-api
+        tty: true
+        restart: always
+        networks:
+            - my-finances
+        ports:
+            - "3000:3000"
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+            restart_policy:
+                condition: on-failure
+
+
+    finances-api:
+        container_name: finances-api
+        build:
+            context: ./api
+            args:
+                db_url: finances-db
+                db_database: financas
+                db_user: postgres
+                db_password: 1234567
+        image: api-finances:latest
+        depends_on:
+            - finances-db
+        networks:
+            - my-finances
+        ports:
+            - "8080:8080"
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 2
+            restart_policy:
+                condition: on-failure
+
+    finances-db:
+        container_name: finances-db
+        image: postgres:12-alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: financas
+            POSTGRES_PASSWORD: 1234567
+        volumes:
+            - ./dump/:/docker-entrypoint-initdb.d
+        networks:
+            - my-finances
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+
+networks:
+    my-finances:

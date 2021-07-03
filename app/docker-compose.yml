@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+    finances-front:
+        container_name: finances-front            
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.prod
+        image: finances-front:latest
+        depends_on:
+            - finances-api
+        tty: true
+        restart: always
+        networks:
+            - my-finances
+        ports:
+            - "80:80"   
+
+    finances-api:
+        container_name: finances-api
+        build:
+            context: ./api
+            args:
+                db_url: finances-db
+                db_database: financas
+                db_user: postgres
+                db_password: 1234567
+        image: api-finances:latest
+        depends_on:
+            - finances-db
+        networks:
+            - my-finances
+        ports:
+            - "8080:8080"
+        
+    finances-db:
+        container_name: finances-db
+        image: postgres:12-alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: financas
+            POSTGRES_PASSWORD: 1234567
+        volumes:
+            - ./dump/:/docker-entrypoint-initdb.d
+        networks:
+            - my-finances        
+
+    # pgadmin_db:
+    #     image: dpage/pgadmin4
+    #     container_name: pgadmin
+    #     environment:
+    #         PGADMIN_DEFAULT_EMAIL: "admin@finances.com"
+    #         PGADMIN_DEFAULT_PASSWORD: "root"
+    #     ports:
+    #         - "8081:80"
+    #     depends_on:
+    #         - finances-db
+    #     networks:
+    #         - my-finances
+    #     deploy:
+    #         placement:
+    #             constraints: [node.role == manager]
+
+networks:
+    my-finances:
