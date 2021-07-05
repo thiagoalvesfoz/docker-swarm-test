@@ -17,6 +17,7 @@
     :ip => "192.168.10.10", 
     :mem => 1024,
     :script => "./manager.sh",
-    :folder => "./app", # pra depois
+    :folder => "./app",
+    :entrypoint => "cd app && docker stack deploy --compose-file='deploy-swarm.yml' app"
   },
 }
