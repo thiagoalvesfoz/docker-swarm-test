@@ -4,4 +4,4 @@ create table financas.usuario (id  bigserial not null, email varchar(255), nome 
 alter table if exists financas.lancamento add constraint FKt2a5b4jc8powehfmsyeufarkr foreign key (id_usuario) references financas.usuario;
 
 -- add user to test
-insert into financas.usuario (nome, email, senha) values ("John Doe", "teste@teste.com", "1234");
+-- insert into financas.usuario (nome, email, senha) values ("John Doe", "teste@teste.com", "1234");
