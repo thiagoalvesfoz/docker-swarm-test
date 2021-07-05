@@ -6,7 +6,7 @@ services:
         build:
             context: ./frontend
             dockerfile: Dockerfile.prod
-        image: finances-front:latest
+        image: thiagoalvesfoz/finances-front:latest
         depends_on:
             - finances-api
         tty: true
@@ -25,7 +25,7 @@ services:
                 db_database: financas
                 db_user: postgres
                 db_password: 1234567
-        image: api-finances:latest
+        image: thiagoalvesfoz/api-finances:latest
         depends_on:
             - finances-db
         networks:

@@ -17,6 +17,6 @@
     :ip => "192.168.10.10", 
     :mem => 1024,
     :script => "./manager.sh",
-    # :folder => "./app", # pra depois
+    :folder => "./app", # pra depois
   },
 }

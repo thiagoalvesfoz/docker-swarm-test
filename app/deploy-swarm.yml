@@ -2,13 +2,11 @@ version: '3'
 
 services:
     finances-front:
-        container_name: finances-front
-        build: ./frontend
-        image: finances-front:latest
+        container_name: finances-front        
+        image: thiagoalvesfoz/finances-front:latest
         depends_on:
             - finances-api
         tty: true
-        restart: always
         networks:
             - my-finances
         ports:
@@ -22,15 +20,8 @@ services:
 
 
     finances-api:
-        container_name: finances-api
-        build:
-            context: ./api
-            args:
-                db_url: finances-db
-                db_database: financas
-                db_user: postgres
-                db_password: 1234567
-        image: api-finances:latest
+        container_name: finances-api        
+        image: thiagoalvesfoz/api-finances:latest
         depends_on:
             - finances-db
         networks:

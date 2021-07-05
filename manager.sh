@@ -32,6 +32,7 @@ sudo apt-get install sshpass -y
 MANAGER="192.168.10.10"
 HOSTS=("192.168.10.11" "192.168.10.12")
 KEY="vagrant"
+BLUE='\e[34m'
 
 # INIT DOCKER SWARM
 docker swarm init --advertise-addr $MANAGER
@@ -46,7 +47,7 @@ for i in ${!HOSTS[*]} ; do
      sshpass -p ${KEY} ssh -t -o StrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -l ${KEY} ${HOSTS[i]} "${JOIN_WORKER}"
    
     if [ $? -eq 0 ] ; then
-        echo "WORKER ${HOSTS[i]} ADICIONADO"
+        echo -e "\n${BLUE}[INFO] WORKER ${HOSTS[i]} ADICIONADO\n"
     fi
 done
 
