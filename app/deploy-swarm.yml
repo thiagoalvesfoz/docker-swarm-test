@@ -1,8 +1,7 @@
 version: '3'
 
 services:
-    finances-front:
-        container_name: finances-front        
+    finances-front:     
         image: thiagoalvesfoz/finances-front:latest
         depends_on:
             - finances-api
@@ -10,7 +9,7 @@ services:
         networks:
             - my-finances
         ports:
-            - "3000:3000"
+            - "80:80"
         deploy:
             replicas: 2
             update_config:
@@ -19,8 +18,7 @@ services:
                 condition: on-failure
 
 
-    finances-api:
-        container_name: finances-api        
+    finances-api:        
         image: thiagoalvesfoz/api-finances:latest
         depends_on:
             - finances-db
@@ -36,7 +34,6 @@ services:
                 condition: on-failure
 
     finances-db:
-        container_name: finances-db
         image: postgres:12-alpine
         ports:
             - "5432:5432"
